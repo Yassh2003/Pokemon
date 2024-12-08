@@ -9,7 +9,16 @@ export const Pokemon = () => {
         try {
             const res = await fetch(API);
             const data = await res.json();
-            console.log(data);
+
+            const detailedPokemonData = data.results.map(async (currPokemon) => {
+                const res = await fetch(currPokemon.url);
+                const data = await res.json();
+                return data;
+            })
+
+            const detailedResponses = await Promise.all(detailedPokemonData);
+            console.log(detailedResponses);
+            
             
         } catch (error) {
             console.log(error);

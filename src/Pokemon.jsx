@@ -1,7 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./index.css"
+import PokemonCards from "./PokemonCards";
 
 export const Pokemon = () => {
+
+    const [pokemon, setPokemon] = useState([]);
 
     const API = "https://pokeapi.co/api/v2/pokemon?limit=24";
 
@@ -18,6 +21,7 @@ export const Pokemon = () => {
 
             const detailedResponses = await Promise.all(detailedPokemonData);
             console.log(detailedResponses);
+            setPokemon(detailedResponses);
             
             
         } catch (error) {
@@ -29,7 +33,22 @@ export const Pokemon = () => {
         fetchPokemon();
     },[]);
 
-    return <>
-    <h1>Pokemon App</h1>
-    </>
+    return (
+        <>
+            <section className="container">
+                <header>
+                    <h1>Lets Catch Pokemon</h1>
+                </header>
+                <div>
+                    <ul className="cards">
+                        {
+                            pokemon.map((currPokemon)=>{
+                                return <PokemonCards key={currPokemon.id} pokemonData={currPokemon}/>;
+                            })
+                        }
+                    </ul>
+                </div>
+            </section>
+        </>
+    );
 }
